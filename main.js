@@ -251,7 +251,8 @@ function showResult() {
   // Count trait frequencies
   const counts = {};
   answers.forEach(trait => { counts[trait] = (counts[trait]||0) + 1; });
-  // Find best matching career:
+  
+  // Find best matching career
   let bestCareer = null;
   let bestScore = -1;
   let bestTie = [];
@@ -267,16 +268,120 @@ function showResult() {
       bestTie.push(career);
     }
   });
+
+  // Summarize traits
+  let sortedTraits = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+  let topTraits = sortedTraits.slice(0, 3).map(t => t[0]).join(', ');
+
   let html = `<div class="result">
-    <h2>Results In!</h2>
-    <div>Your Match is:</div>`;
+    <h2>Assessment Complete</h2>
+    <div style="font-size: 0.9em; color: #6b7280; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.05em;">
+      Primary Traits: ${topTraits}
+    </div>
+    <div style="margin-bottom: 10px; font-weight: 500;">Recommended Profile:</div>`;
+    
   // If tie, list all
   bestTie.forEach(item => {
-    html += `<div class="career-name">${item.name}</div><div class="career-desc">${item.desc}</div>`;
+    html += `<div class="career-name">${item.name}</div>
+             <div class="career-desc">${item.desc}</div>
+             
+             <!-- Location and AI Feature Buttons -->
+             <div style="margin-top: 25px; display: flex; flex-direction: column; gap: 12px; align-items: center;">
+                 <button class="btn-action" onclick="findJobsNearMe('${item.name}')" style="width: 100%; max-width: 300px;">
+                   Find Local Opportunities
+                 </button>
+                 <button class="btn-action btn-action-outline" onclick="openAIChat('${item.name}')" style="width: 100%; max-width: 300px;">
+                   Query Database
+                 </button>
+             </div>
+             `;
   });
-  html += `<span class="trophy" role="img" aria-label="trophy">🏆</span>`;
-  html += `<button class="btn-restart" onclick="startQuiz()">Take Quiz Again</button></div>`;
+
+  html += `<button class="btn-restart" onclick="startQuiz()" style="margin-top: 40px; border: none; font-size: 0.9em; text-decoration: underline; background: transparent; color: #4b5563;">Restart Assessment</button></div>`;
+  
+  // Container for AI Chat (Hidden by default)
+  html += `
+    <div id="ai-chat-box" style="display:none; margin-top:30px; text-align: left; background: #ffffff; padding: 20px; border-radius: 4px; border: 1px solid #e5e7eb;">
+      <h3 style="margin-top:0; font-size: 1.1em; color: #111827; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px;">Information Database</h3>
+      <div id="ai-responses" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px; font-size: 0.95em; color: #374151; line-height: 1.5;"></div>
+      <div style="display: flex; gap: 8px;">
+        <input type="text" id="ai-input" placeholder="Type your query..." style="flex: 1; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 4px; font-family: inherit;">
+        <button onclick="askAIApi()" class="btn-action" style="margin-top: 0; padding: 10px 20px;">Submit</button>
+      </div>
+    </div>
+  `;
+
   document.getElementById('main').innerHTML = html;
 }
+
+// ---------------------------------------------------------
+// Job Location Finder (Using Geolocation + Google Maps)
+// ---------------------------------------------------------
+function findJobsNearMe(jobTitle) {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        let lat = position.coords.latitude;
+        let lng = position.coords.longitude;
+        let query = encodeURIComponent(jobTitle + ' companies jobs');
+        let mapsUrl = `https://www.google.com/maps/search/\${query}/@\${lat},\${lng},12z\`;
+        window.open(mapsUrl, '_blank');
+      },
+      (error) => {
+        alert("Location access denied or unavailable. Opening general search instead.");
+        window.open(\`https://www.indeed.com/jobs?q=\${encodeURIComponent(jobTitle)}\`, '_blank');
+      }
+    );
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+}
+
+// ---------------------------------------------------------
+// Basic Public API "AI" Concept (Using Wikipedia API as free example)
+// ---------------------------------------------------------
+let currentAICareer = "";
+function openAIChat(jobTitle) {
+  currentAICareer = jobTitle;
+  document.getElementById('ai-chat-box').style.display = 'block';
+  document.getElementById('ai-responses').innerHTML = `<em>Query loaded for profile: ${jobTitle}. How may I assist?</em>`;
+}
+
+async function askAIApi() {
+  const inputEl = document.getElementById('ai-input');
+  const question = inputEl.value.trim();
+  if(!question) return;
+
+  const responsesEl = document.getElementById('ai-responses');
+  responsesEl.innerHTML += \`<div style="margin-top:15px; padding-bottom: 5px; border-bottom: 1px solid #f3f4f6;"><strong>Query:</strong> \${question}</div>\`;
+  responsesEl.innerHTML += \`<div id="ai-loading" style="color: #6b7280; margin-top:10px; font-style: italic;">Processing request...</div>\`;
+  inputEl.value = '';
+
+  try {
+    // For a 100% free "AI" information fetch with no API keys, we can query Wikipedia's public API
+    // If you ever get a free LLM API key, you'd replace this fetch URL with the LLM endpoint (e.g. HuggingFace, OpenAI, Gemini)
+    let searchTerm = currentAICareer.split(' ')[0]; // Simplify term for better matching
+    let response = await fetch(\`https://en.wikipedia.org/api/rest_v1/page/summary/\${encodeURIComponent(searchTerm)}\`);
+    
+    document.getElementById('ai-loading').remove();
+
+    if(response.ok) {
+      let data = await response.json();
+      responsesEl.innerHTML += \`<div style="margin-top:10px; padding: 12px; background: #f9fafb; border-left: 3px solid #111827; border-radius: 0 4px 4px 0;"><strong>System:</strong> \${data.extract || "Insufficient data to provide a complete summary for this specific role."}</div>\`;
+    } else {
+      responsesEl.innerHTML += \`<div style="margin-top:10px; color: #b91c1c; padding: 10px; background: #fef2f2; border-left: 3px solid #b91c1c;"><strong>System Error:</strong> Unable to locate profile in database.</div>\`;
+    }
+  } catch (err) {
+    document.getElementById('ai-loading')?.remove();
+    responsesEl.innerHTML += \`<div style="margin-top:10px; color: #b91c1c; padding: 10px; background: #fef2f2; border-left: 3px solid #b91c1c;"><strong>Network Error:</strong> Connection to database failed.</div>\`;
+  }
+  
+  // Auto-scroll to bottom
+  responsesEl.scrollTop = responsesEl.scrollHeight;
+}
+
 // Expose globally
 window.startQuiz = startQuiz;
+window.findJobsNearMe = findJobsNearMe;
+window.openAIChat = openAIChat;
+window.askAIApi = askAIApi;
