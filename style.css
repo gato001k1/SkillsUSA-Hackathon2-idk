@@ -1,73 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
 body {
-  font-family: 'Times New Roman', Times, serif;
-  background: #FCFCFC;
+  font-family: 'Inter', sans-serif;
+  background: #f9fafb;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111827;
 }
 .container {
   width: 90%;
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 24px;
-  background: #FFF;
-  border-radius: 8px;
-  box-shadow: 0 0 10px #CCC;
+  max-width: 650px;
+  padding: 40px 30px;
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid #e5e7eb;
+  text-align: center;
 }
 .question {
-  font-size: 1.25em;
-  margin-bottom: 20px;
+  font-size: 1.2em;
+  font-weight: 500;
+  margin-bottom: 30px;
+  color: #1f2937;
 }
 .options button {
   display: block;
   width: 100%;
-  margin-bottom: 10px;
-  padding: 12px;
+  margin-bottom: 12px;
+  padding: 16px;
   font-size: 1em;
-  background: #f0f0f0;
-  border: 1px solid #DDD;
+  font-weight: 500;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
   cursor: pointer;
-  color: #333;
-  transition: background 0.2s;
+  color: #374151;
+  transition: all 0.2s ease;
 }
 .options button:hover {
-  background: #e6e6e6;
+  background: #f3f4f6;
+  border-color: #9ca3af;
 }
-h1, h2 {
-  margin-top: 0;
+h1 {
+  font-size: 2em;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 10px;
+  letter-spacing: -0.025em;
+}
+h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  color: #111827;
 }
 .result {
   margin-top: 30px;
-  text-align: center;
-  font-size: 1.35em;
-}
-.trophy {
-  font-size: 3em;
-  margin-top: 20px;
-  color: gold;
-  filter: drop-shadow(0 0 5px orange);
-  display: block;
-  text-align: center;
+  font-size: 1.1em;
 }
 .career-name {
-  color: #b28900;
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-top: 16px;
+  color: #111827;
+  font-size: 1.4em;
+  font-weight: 600;
+  margin-top: 20px;
 }
 .career-desc {
-  margin-top: 10px;
-  font-size: 1em;
+  margin-top: 12px;
+  font-size: 1.05em;
+  line-height: 1.6;
+  color: #4b5563;
 }
-.btn-restart {
-  margin-top: 30px;
-  padding: 10px 22px;
-  background: #fffbe5;
-  border: 1px solid #eccc52;
+.btn-action, .btn-restart {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 24px;
+  background: #111827;
+  color: #ffffff;
+  border: 1px solid #111827;
+  border-radius: 4px;
   font-size: 1em;
+  font-weight: 500;
   font-family: inherit;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-action-outline {
+  background: #ffffff;
+  color: #111827;
+}
+.btn-action:hover, .btn-restart:hover {
+  background: #374151;
+  border-color: #374151;
+  color: #ffffff;
+}
+.btn-action-outline:hover {
+  background: #f9fafb;
+  color: #111827;
 }
 @media(max-width:600px){
-  .container { padding: 8px;}
-  .question { font-size: 1em;}
+  .container { padding: 25px 20px; border: none; box-shadow: none; background: transparent; }
+  .question { font-size: 1.1em;}
+  h1 { font-size: 1.6em;}
 }
