@@ -1,0 +1,73 @@
+body {
+  font-family: 'Times New Roman', Times, serif;
+  background: #FCFCFC;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  width: 90%;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 24px;
+  background: #FFF;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #CCC;
+}
+.question {
+  font-size: 1.25em;
+  margin-bottom: 20px;
+}
+.options button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 12px;
+  font-size: 1em;
+  background: #f0f0f0;
+  border: 1px solid #DDD;
+  cursor: pointer;
+  color: #333;
+  transition: background 0.2s;
+}
+.options button:hover {
+  background: #e6e6e6;
+}
+h1, h2 {
+  margin-top: 0;
+}
+.result {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 1.35em;
+}
+.trophy {
+  font-size: 3em;
+  margin-top: 20px;
+  color: gold;
+  filter: drop-shadow(0 0 5px orange);
+  display: block;
+  text-align: center;
+}
+.career-name {
+  color: #b28900;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 16px;
+}
+.career-desc {
+  margin-top: 10px;
+  font-size: 1em;
+}
+.btn-restart {
+  margin-top: 30px;
+  padding: 10px 22px;
+  background: #fffbe5;
+  border: 1px solid #eccc52;
+  font-size: 1em;
+  font-family: inherit;
+  cursor: pointer;
+}
+@media(max-width:600px){
+  .container { padding: 8px;}
+  .question { font-size: 1em;}
+}
