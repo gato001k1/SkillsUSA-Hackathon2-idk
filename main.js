@@ -393,9 +393,16 @@ async function fetchLocalJobs(jobTitle) {
         }
       ];
 
+      // SVG Definitions
+      const pinSvg = `<svg style="width:16px;height:16px;vertical-align:middle;margin-right:2px;margin-top:-2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`;
+      const buildingSvg = `<svg style="width:16px;height:16px;vertical-align:middle;margin-right:4px;margin-top:-2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01"></path><path d="M16 6h.01"></path><path d="M12 6h.01"></path><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path></svg>`;
+      const moneySvg = `<svg style="width:14px;height:14px;vertical-align:middle;margin-right:4px;margin-top:-2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg>`;
+      const clockSvg = `<svg style="width:14px;height:14px;vertical-align:middle;margin-right:4px;margin-top:-2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`;
+      const mapSvg = `<svg style="width:20px;height:20px;vertical-align:middle;margin-right:6px;margin-top:-2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>`;
+
       let jobsHtml = `
-        <h3 style="margin-top: 0; font-size: 1.1em; color: #1f2937;">
-          <span style="margin-right: 5px;">📍</span> Opportunities near ${city}, ${region}
+        <h3 style="margin-top: 0; font-size: 1.1em; color: #1f2937; display: flex; align-items: center;">
+          ${mapSvg} Opportunities near ${city}, ${region}
         </h3>
         <p style="font-size: 0.9em; color: #4b5563; margin-bottom: 15px;">We matched your IP to locate these top regional positions:</p>
         
@@ -408,12 +415,14 @@ async function fetchLocalJobs(jobTitle) {
               <img src="${job.img}" alt="Office Image" style="width: 100%; height: 120px; object-fit: cover; border-bottom: 1px solid #e5e7eb;">
               <div style="padding: 16px; display: flex; flex-direction: column; flex-grow: 1;">
                 <div style="font-weight: 600; font-size: 1.1em; color: #111827;">${job.title}</div>
-                <div style="font-size: 0.95em; color: #4b5563; margin-top: 4px;"><strong>🏢 ${job.company}</strong></div>
+                <div style="font-size: 0.95em; color: #4b5563; margin-top: 4px; display: flex; align-items: center;">
+                  <strong>${buildingSvg}${job.company}</strong>
+                </div>
                 
                 <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
-                  <span style="background: #f3f4f6; color: #4b5563; padding: 4px 8px; border-radius: 4px; font-size: 0.8em;">📌 ${job.location}</span>
-                  <span style="background: #ecfdf5; color: #065f46; padding: 4px 8px; border-radius: 4px; font-size: 0.8em;">💰 ${job.salary}</span>
-                  <span style="background: #eff6ff; color: #065f46; padding: 4px 8px; border-radius: 4px; font-size: 0.8em;">⏱️ ${job.type}</span>
+                  <span style="background: #f3f4f6; color: #4b5563; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; display: inline-flex; align-items: center;">${pinSvg}${job.location}</span>
+                  <span style="background: #ecfdf5; color: #065f46; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; display: inline-flex; align-items: center;">${moneySvg}${job.salary}</span>
+                  <span style="background: #eff6ff; color: #1e3a8a; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; display: inline-flex; align-items: center;">${clockSvg}${job.type}</span>
                 </div>
 
                 <p style="font-size: 0.9em; color: #374151; margin-top: 12px; line-height: 1.5; flex-grow: 1;">${job.desc}</p>

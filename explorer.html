@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Explorer</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .explorer-container {
+      width: 90%;
+      max-width: 1000px;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      border: 1px solid #e5e7eb;
+    }
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+    .search-bar input {
+      flex: 1;
+      padding: 14px 20px;
+      font-size: 1.05em;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-family: inherit;
+    }
+    .search-bar button {
+      padding: 14px 28px;
+      font-size: 1.05em;
+      background: #111827;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .search-bar button:hover {
+      background: #374151;
+    }
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .filter-badge {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      color: #4b5563;
+    }
+    .job-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .job-card {
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-align: left;
+    }
+    .job-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    }
+    .job-provider {
+      font-size: 0.8em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 6px 16px;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="explorer-container">
+    <h1 style="text-align: left; margin-bottom: 10px;">Universal Job Explorer</h1>
+    <p style="text-align: left; color: #4b5563; margin-bottom: 25px;">Search across multiple job boards and aggregated providers at once.</p>
+    
+    <div class="search-bar">
+      <input type="text" id="search-query" placeholder="e.g. Software Developer, Graphic Designer...">
+      <button onclick="searchJobs()">Search</button>
+    </div>
+
+    <div class="filters">
+      <span class="filter-badge">Sources: Indeed (Scraped), Arbeitnow (API)</span>
+      <span class="filter-badge">Location: Auto-detecting...</span>
+    </div>
+
+    <div id="results-container" class="job-grid">
+      <!-- Welcome message -->
+      <div style="grid-column: 1 / -1; text-align: center; color: #6b7280; padding: 40px;">
+        <svg style="width: 48px; height: 48px; margin-bottom: 10px; color: #d1d5db;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <p>Enter a keyword to explore aggregated jobs.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="explorer.js"></script>
+</body>
+</html>
